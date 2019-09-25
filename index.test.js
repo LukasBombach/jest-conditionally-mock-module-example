@@ -1,23 +1,24 @@
+/* if (true) {
+  jest.doMock("./myModule");
+} */
+
+// const MyModule = require("./myModule");
 import MyModule from "./myModule";
 
-if (true) {
-  jest.mock("./myModule");
-}
+jest.mock("./myModule", () => {
+  if (false) return jest.requireActual("./myModule");
+  return jest.genMockFromModule("./myModule");
+});
 
 describe("MyModule", () => {
-  let myModule;
+  const myModule = new MyModule();
 
-  beforeEach(() => {
-    myModule = new MyModule();
-  });
-
-  test("I am NOT mocked", () => {
+  test("I am the original", () => {
     expect(myModule.powerOn()).toBe("I am the original implementation");
   });
 
   test("I am mocked", () => {
-    if (myModule.powerOn.mockReturnValueOnce)
-      myModule.powerOn.mockReturnValueOnce("I am a mock");
+    myModule.powerOn.mockReturnValueOnce("I am a mock");
     expect(myModule.powerOn()).toBe("I am a mock");
   });
 });
