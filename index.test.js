@@ -1,8 +1,3 @@
-/* if (true) {
-  jest.doMock("./myModule");
-} */
-
-// const MyModule = require("./myModule");
 import MyModule from "./myModule";
 
 jest.mock("./myModule", () => {
